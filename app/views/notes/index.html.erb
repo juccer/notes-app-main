@@ -6,20 +6,28 @@
     <%= f.text_field :title, autofocus: true, placeholder: 'Search by title', value: params.dig(:filters, :title) %>
   <% end %>
 
-  <% @notes.each do |note| %>
-    <%= link_to note_path(note) do %>
-      <div class="col s12">
-        <div class="card">
-          <div class="card-content black-text">
-            <span class="card-title">
-              <%= note.title %>
-              <span class="right" style="font-size: 60%; position: absolute; top: -5px; right: 5px;">
-                <%= format_as_localtime note.created_at %>
+  <% # Agrupar las notas por mes %>
+  <% @notes.group_by { |note| note.created_at.strftime('%B %Y') }.each do |month, notes| %>
+    <div class="col s12">
+      <h5 class="month-header"><%= month %></h5>  <!-- Encabezado del mes -->
+    </div>
+
+    <% # Mostrar las notas para ese mes %>
+    <% notes.each do |note| %>
+      <%= link_to note_path(note) do %>
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content black-text">
+              <span class="card-title">
+                <%= note.title %>
+                <span class="right" style="font-size: 60%; position: absolute; top: -5px; right: 5px;">
+                  <%= format_as_localtime note.created_at %>
+                </span>
               </span>
-            </span>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
     <% end %>
   <% end %>
 </div>
