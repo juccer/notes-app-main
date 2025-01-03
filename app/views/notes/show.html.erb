@@ -1,26 +1,44 @@
-<p id="notice"><%= notice %></p>
+<head>
+  <style>
+    notice, .card-content p {
+      word-wrap: break-word; 
+      overflow-wrap: break-word; 
+      white-space: pre-wrap; 
+      word-break: break-word; 
+    }
 
-<div class="row">
-  <div class="col s12">
-    <div class="card">
-      <div class="card-content">
-        <span class="card-title">
-          <%= @note.title %>
-          <span class="right" style="font-size: 50%">
-            <%= format_as_localtime @note.created_at %>
+    notice {
+      max-height: 200px; 
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <p id="notice"><%= notice %></p>
+
+  <div class="row">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">
+            <%= @note.title %>
+            <span class="right" style="font-size: 50%">
+              <%= format_as_localtime @note.created_at %>
+            </span>
           </span>
-        </span>
-        <p style="white-space: pre-line"><%= @note.body %></p>
-      </div>
-      <div class="card-action">
-        <%= link_to @note, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' }, class: 'black-text' do %>
-          <%= material_icon.delete %>
-        <% end %>
+          <p style="white-space: pre-line"><%= @note.body %></p>
+        </div>
+        <div class="card-action">
+          <%= link_to @note, title: 'Delete', method: :delete, data: { confirm: 'Are you sure?' }, class: 'black-text' do %>
+            <%= material_icon.delete %>
+          <% end %>
 
-        <%= link_to edit_note_path(@note), title: 'Edit', class: 'black-text right' do %>
-          <%= material_icon.mode_edit %>
-        <% end %>
+          <%= link_to edit_note_path(@note), title: 'Edit', class: 'black-text right' do %>
+            <%= material_icon.mode_edit %>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</body>
