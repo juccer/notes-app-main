@@ -33,7 +33,14 @@
 </div>
 
 <div class="fixed-action-btn">
-  <%= link_to new_note_path, title: 'New note', class: 'btn-floating btn-large pulse' do %>
+  <%= link_to new_note_path, title: 'New note', class: 'btn-floating btn-large pulse', data: { tooltip: 'New note' } do %>
     <%= material_icon.add %>
   <% end %>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.tooltipped');
+    var instances = M.Tooltip.init(elems);
+  });
+</script>
