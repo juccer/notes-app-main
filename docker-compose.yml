@@ -11,6 +11,6 @@ services:
         rails server -b 0.0.0.0
       "
     volumes:
-      - ./:/app
+      - .:/app
     ports:
       - "3000:3000"
