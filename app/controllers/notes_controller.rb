@@ -4,27 +4,28 @@ class NotesController < ApplicationController
   def index
     @notes = Note.all
 
-    # Obtener los filtros
     filters = params[:filters]&.to_unsafe_h&.symbolize_keys
-    if filters
-      # Filtrar por título si se proporciona
-      if filters[:title].present?
-        @notes = @notes.search_by_title(filters[:title])
-      end
+    if filters && filters[:search].present?
+      # Buscar en título y contenido
+      @notes = @notes.where("title LIKE ? OR body LIKE ?", "%#{filters[:search]}%", "%#{filters[:search]}%")
+    end
 
-      # Ordenar según la selección
+    # Ordenar las notas según el parámetro de orden
+    if filters && filters[:order].present?
       case filters[:order]
       when 'desc_date'
-        @notes = @notes.order(created_at: :desc)
+        @notes = @notes.order(created_at: :desc)  # Más reciente a más antiguo
       when 'asc_date'
-        @notes = @notes.order(created_at: :asc)
+        @notes = @notes.order(created_at: :asc)   # Más antiguo a más reciente
       when 'asc_alpha'
-        @notes = @notes.order(title: :asc)
+        @notes = @notes.order(:title)             # Alfabético A-Z
       when 'desc_alpha'
-        @notes = @notes.order(title: :desc)
+        @notes = @notes.order(title: :desc)       # Alfabético Z-A
+      else
+        @notes = @notes.order(created_at: :desc)  # Si no se pasa un parámetro válido, ordenamos por fecha por defecto
       end
     else
-      # Ordenar por defecto
+      # Orden por defecto: por fecha (más reciente a más antiguo)
       @notes = @notes.order(created_at: :desc)
     end
   end
