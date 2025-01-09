@@ -1,25 +1,22 @@
 <div class="row">
   <%= form_for :filters, html: { class: 'input-field col s12 filters-form' }, method: 'get' do |f| %>
     <div class="filters-container" style="display: flex; align-items: center; gap: 10px;">
-      <!-- Buscador genérico -->
-      <div class="input-field" style="flex: 2;">
+
+    <div class="input-field" style="flex: 2;">
         <%= material_icon.search.css_class('prefix') %>
-        <%= f.text_field :search, autofocus: true, placeholder: 'Buscar', value: params.dig(:filters, :search), class: 'validate' %>
+        <%= f.text_field :search, autofocus: true, placeholder: 'Search', value: params.dig(:filters, :search), class: 'validate' %>
       </div>
 
-      <!-- Selector de orden -->
       <div class="input-field" style="flex: 1;">
-        <%= f.select :order, [['Más reciente a más antiguo', 'desc_date'], 
-                              ['Más antiguo a más reciente', 'asc_date'], 
-                              ['Alfabético A-Z', 'asc_alpha'], 
-                              ['Alfabético Z-A', 'desc_alpha']],
+        <%= f.select :order, [['Newest to oldest', 'desc_date'], 
+                              ['Older to newer', 'asc_date'], 
+                              ['Alphabetical A-Z', 'asc_alpha'], 
+                              ['Alphabetical Z-A', 'desc_alpha']],
                      { selected: params.dig(:filters, :order) }, 
                      { class: 'browser-default' } %>
       </div>
-
-      <!-- Botón de aplicar filtros -->
       <div>
-        <%= f.submit 'Aplicar filtros', class: 'btn' %>
+        <%= f.submit 'Apply', class: 'btn' %>
       </div>
     </div>
   <% end %>
