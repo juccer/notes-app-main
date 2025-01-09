@@ -41,10 +41,10 @@ class NotesController < ApplicationController
 
   def create
     @note = Note.new(note_params)
-
+  
     respond_to do |format|
       if @note.save
-        format.html { redirect_to note_url(@note), notice: "Note was successfully created." }
+        format.html { redirect_to note_url(@note), notice: "Note successfully created." }
         format.json { render :show, status: :created, location: @note }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -52,11 +52,11 @@ class NotesController < ApplicationController
       end
     end
   end
-
+  
   def update
     respond_to do |format|
       if @note.update(note_params)
-        format.html { redirect_to note_url(@note), notice: "Note was successfully updated." }
+        format.html { redirect_to note_url(@note), notice: "Note successfully updated." }
         format.json { render :show, status: :ok, location: @note }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -64,6 +64,7 @@ class NotesController < ApplicationController
       end
     end
   end
+  
 
   def destroy
     @note.destroy

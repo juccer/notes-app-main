@@ -1,5 +1,5 @@
 class Note < ApplicationRecord
-  validates :title, :body, presence: true
+  validates :title, presence: true, uniqueness: { case_sensitive: false }
 
   def self.search_by_title(keywords)
     keywords.split.reduce(self) do |acc, word|
