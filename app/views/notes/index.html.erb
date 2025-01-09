@@ -1,18 +1,35 @@
-<p id="notice"><%= notice %></p>
-
 <div class="row">
-  <%= form_for :filters, html: { class: 'input-field col s12' }, method: 'get' do |f| %>
-    <%= material_icon.search.css_class('prefix') %>
-    <%= f.text_field :title, autofocus: true, placeholder: 'Search by title', value: params.dig(:filters, :title) %>
+  <%= form_for :filters, html: { class: 'input-field col s12 filters-form' }, method: 'get' do |f| %>
+    <div class="filters-container" style="display: flex; align-items: center; gap: 10px;">
+      <!-- Buscador -->
+      <div class="input-field" style="flex: 2;">
+        <%= material_icon.search.css_class('prefix') %>
+        <%= f.text_field :title, autofocus: true, placeholder: 'Search by title', value: params.dig(:filters, :title), class: 'validate' %>
+      </div>
+
+      <!-- ordenamiento -->
+      <div class="input-field">
+        <%= f.select :order, [['Más reciente a más antiguo', 'desc_date'], 
+                              ['Más antiguo a más reciente', 'asc_date'], 
+                              ['Alfabético A-Z', 'asc_alpha'], 
+                              ['Alfabético Z-A', 'desc_alpha']],
+                     { selected: params.dig(:filters, :order) }, 
+                     { class: 'browser-default' } %>
+      </div>
+      <div>
+        <%= f.submit 'Aplicar', class: 'btn' %>
+      </div>
+    </div>
   <% end %>
+</div>
+
 
   <% # Agrupar las notas por mes %>
   <% @notes.group_by { |note| note.created_at.strftime('%B %Y') }.each do |month, notes| %>
     <div class="col s12">
-      <h5 class="month-header"><%= month %></h5>  <!-- Encabezado del mes -->
+      <h5 class="month-header"><%= month %></h5>
     </div>
 
-    <% # Mostrar las notas para ese mes %>
     <% notes.each do |note| %>
       <%= link_to note_path(note) do %>
         <div class="col s12">
@@ -42,5 +59,15 @@
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.tooltipped');
     var instances = M.Tooltip.init(elems);
+
+    const select = document.querySelector('[name="filters[order]"]');
+    if (select) {
+      const savedOrder = localStorage.getItem('notesOrder');
+      if (savedOrder) select.value = savedOrder;
+
+      select.addEventListener('change', function() {
+        localStorage.setItem('notesOrder', select.value);
+      });
+    }
   });
 </script>

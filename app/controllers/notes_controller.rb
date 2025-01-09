@@ -1,15 +1,32 @@
 class NotesController < ApplicationController
-  before_action :set_note, only: %i[ show edit update destroy ]
+  before_action :set_note, only: %i[show edit update destroy]
 
   def index
-    @notes = Note.order(created_at: :desc)
+    @notes = Note.all
 
+    # Obtener los filtros
     filters = params[:filters]&.to_unsafe_h&.symbolize_keys
-    if filters && filters[:title].present?
-      @notes = @notes.search_by_title(filters[:title])
-    end
+    if filters
+      # Filtrar por título si se proporciona
+      if filters[:title].present?
+        @notes = @notes.search_by_title(filters[:title])
+      end
 
-    @notes
+      # Ordenar según la selección
+      case filters[:order]
+      when 'desc_date'
+        @notes = @notes.order(created_at: :desc)
+      when 'asc_date'
+        @notes = @notes.order(created_at: :asc)
+      when 'asc_alpha'
+        @notes = @notes.order(title: :asc)
+      when 'desc_alpha'
+        @notes = @notes.order(title: :desc)
+      end
+    else
+      # Ordenar por defecto
+      @notes = @notes.order(created_at: :desc)
+    end
   end
 
   def show
